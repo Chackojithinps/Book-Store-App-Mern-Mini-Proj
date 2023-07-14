@@ -37,15 +37,15 @@ const getByid = async (req,res,next)=>{
 const addBook = async (req,res,next) =>{
     let books
     try { 
-        console.log("Hellooooooooooooooo")
         console.log(req.body)
-        const {name,author,description,price,available} = req.body
+        const {name,author,description,price,available,image} = req.body
          books = new Book ({
             name,
             author,
             description,
             price,
-            available
+            available,
+            image
         })
         await books.save()
     
@@ -64,20 +64,21 @@ const updateBook =async (req,res) =>{
     let books;
     try {
         const id = req.params.id;
-        const {name,author,description,price,available} = req.body
-         books = await Book.findByIdAndUpdate({_id:id},{
+        const {name,author,description,price,available,image} = req.body
+         books = await Book.findByIdAndUpdate(id,{
             name,
             author,
             description,
             price,
-            available
+            available,
+            imamge
          })
          await books.save()
     } catch (error) {
         console.log(error.message)
     }
     if(!books){
-        return res.status(500).json({messege:"Unable to add"})
+        return res.status(500).json({messege:"Unable to update"})
     }
     return res.status(201).json({books})
 }
