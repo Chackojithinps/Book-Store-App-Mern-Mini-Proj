@@ -59,6 +59,47 @@ const addBook = async (req,res,next) =>{
     
 }
 
+
+const updateBook =async (req,res) =>{
+    let books;
+    try {
+        const id = req.params.id;
+        const {name,author,description,price,available} = req.body
+         books = await Book.findByIdAndUpdate({_id:id},{
+            name,
+            author,
+            description,
+            price,
+            available
+         })
+         await books.save()
+    } catch (error) {
+        console.log(error.message)
+    }
+    if(!books){
+        return res.status(500).json({messege:"Unable to add"})
+    }
+    return res.status(201).json({books})
+}
+
+
+const deleteBook = async (req,res) =>{
+    let books;
+
+    try {
+        const id = req.params.id
+        books = await Book.findByIdAndDelete(id)
+    } catch (error) {
+        console.log(error.message);
+    }
+    if(!books){
+        return res.status(500).json({message:"No items found in this id to delete"})
+    }
+    return res.status(200).json({message:"item deleted sucessfully"})
+}
+
 exports.getAllBooks = getAllBooks
 exports.addBook = addBook
 exports.getByid = getByid
+exports.updateBook = updateBook
+exports.deleteBook = deleteBook
